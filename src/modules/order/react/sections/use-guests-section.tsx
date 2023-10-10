@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
 
-import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
+import { useDependencies } from '@ratatouille/modules/app/react/DependenciesProvider'
 import { GuestForm } from '@ratatouille/modules/order/core/form/guest.form'
+import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 export const useGuestsSection = () => {
   function addGuest() {
@@ -15,7 +16,8 @@ export const useGuestsSection = () => {
   function onNext() {}
   function isSubmittable() {}
 
-  const guestForm = useRef(new GuestForm())
+  const { idProvider } = useDependencies()
+  const guestForm = useRef(new GuestForm(idProvider))
   const [guests, setGuests] = useState<OrderingDomainModel.Guest[]>([])
 
   return {

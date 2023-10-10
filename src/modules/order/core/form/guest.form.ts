@@ -1,11 +1,13 @@
+import { IIDProvider } from '@ratatouille/modules/core/id-provider'
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 export class GuestForm {
+  constructor(private idProvider: IIDProvider) {}
   addGuest(guests: OrderingDomainModel.Guest[]) {
     return [
       ...guests,
       {
-        id: guests.length === 0 ? '1' : (parseInt(guests[guests.length - 1].id) + 1).toString(),
+        id: this.idProvider.generate(),
         firstName: 'John',
         lastName: 'Doe',
         age: 0,
