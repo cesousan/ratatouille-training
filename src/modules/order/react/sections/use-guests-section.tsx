@@ -9,7 +9,7 @@ export const useGuestsSection = () => {
     setGuests(guests => guestForm.current.addGuest(guests))
   }
   function removeGuest(id: string) {
-    setGuests(guests => guests.filter(guest => guest.id !== id))
+    setGuests(guests => guestForm.current.removeGuest(guests, id))
   }
   function updateGuest(id: string, key: keyof OrderingDomainModel.GuestValues, value: string | number) {}
   function changeOrganizer() {}
