@@ -24,4 +24,24 @@ export class GuestForm {
       organizerId: guestId === state.organizerId ? null : state.organizerId,
     }
   }
+  changeOrganizer(state: OrderingDomainModel.Form, guestId: string): OrderingDomainModel.Form {
+    return {
+      ...state,
+      organizerId: state.guests.some(guest => guest.id === guestId) ? guestId : null,
+    }
+  }
+  isSubmittable(state: OrderingDomainModel.Form): boolean {
+    return state.organizerId !== null
+  }
+  updateGuest<K extends keyof OrderingDomainModel.GuestValues>(
+    state: OrderingDomainModel.Form,
+    guestId: string,
+    key: K,
+    value: OrderingDomainModel.GuestValues[K],
+  ): OrderingDomainModel.Form {
+    return {
+      ...state,
+      guests: state.guests.map(g => (g.id === guestId ? { ...g, [key]: value } : g)),
+    }
+  }
 }

@@ -6,15 +6,25 @@ import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/order
 
 export const useGuestsSection = () => {
   function addGuest() {
-    setForm(guests => guestForm.current.addGuest(guests))
+    setForm(form => guestForm.current.addGuest(form))
   }
   function removeGuest(id: string) {
-    setForm(guests => guestForm.current.removeGuest(guests, id))
+    setForm(form => guestForm.current.removeGuest(form, id))
   }
-  function updateGuest(id: string, key: keyof OrderingDomainModel.GuestValues, value: string | number) {}
-  function changeOrganizer() {}
+  function updateGuest<K extends keyof OrderingDomainModel.GuestValues>(
+    guestId: string,
+    key: K,
+    value: OrderingDomainModel.GuestValues[K],
+  ) {
+    setForm(form => guestForm.current.updateGuest(form, guestId, key, value))
+  }
+  function changeOrganizer(id: string) {
+    setForm(form => guestForm.current.changeOrganizer(form, id))
+  }
   function onNext() {}
-  function isSubmittable() {}
+  function isSubmittable() {
+    return guestForm.current.isSubmittable(form)
+  }
 
   const { idProvider } = useDependencies()
   const guestForm = useRef(new GuestForm(idProvider))
