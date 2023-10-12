@@ -1,6 +1,7 @@
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 import { TableFactory } from '@ratatouille/modules/order/core/model/table.factory'
 import { orderingSlice } from '@ratatouille/modules/order/core/store/ordering.slice'
+import { chooseTable } from '@ratatouille/modules/order/core/usecases/choose-table.usecase'
 import { AppState, useAppDispatch } from '@ratatouille/modules/store/store'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -10,7 +11,7 @@ export const useTable = () => {
     setAssignedTableId(tableId)
   }
   function onNext() {
-    dispatch(orderingSlice.actions.navigateToStep(OrderingDomainModel.Step.Meal))
+    dispatch(chooseTable(assignedTableId!))
   }
   function onPrevious() {
     dispatch(orderingSlice.actions.navigateToStep(OrderingDomainModel.Step.Guests))

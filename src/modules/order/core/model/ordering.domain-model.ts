@@ -10,6 +10,7 @@ export namespace OrderingDomainModel {
   export type Form = {
     guests: Guest[]
     organizerId: string | null
+    assignedTableId: string | null
   }
 
   export type GuestValues = {

@@ -10,17 +10,19 @@ class StubIdProvider {
 
 const idProvider = new StubIdProvider()
 const form = new GuestForm(idProvider)
-const emptyInitialState: OrderingDomainModel.Form = { guests: [], organizerId: null }
+const emptyInitialState: OrderingDomainModel.Form = { guests: [], organizerId: null, assignedTableId: null }
 const johnDoe = GuestFactory.create({ id: '1', firstName: 'John', lastName: 'Doe' })
 const janeDoe = GuestFactory.create({ id: '2', firstName: 'Jane', lastName: 'Doe' })
 
 const stateWithOneUser: OrderingDomainModel.Form = {
   guests: [johnDoe],
   organizerId: null,
+  assignedTableId: null,
 }
 const stateWithTwoUsers: OrderingDomainModel.Form = {
   guests: [johnDoe, janeDoe],
   organizerId: null,
+  assignedTableId: null,
 }
 
 // add a guest
@@ -54,6 +56,7 @@ describe('add a guest', () => {
         },
       ],
       organizerId: null,
+      assignedTableId: null,
     })
   })
   it('should add a guest when there is already two', () => {
@@ -107,6 +110,7 @@ describe('remove a guest', () => {
         },
       ],
       organizerId: null,
+      assignedTableId: null,
     })
   })
 })
