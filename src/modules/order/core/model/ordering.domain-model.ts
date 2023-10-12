@@ -19,8 +19,32 @@ export namespace OrderingDomainModel {
     age: number
   }
 
+  export type MealId = string
+
+  export enum MealType {
+    Entry = 'entry',
+    MainCourse = 'main_course',
+    Dessert = 'dessert',
+    Drink = 'drink',
+  }
+
+  export type MealCourse = {
+    id: MealId
+    title: string
+    type: MealType
+    requiredAge: number | null
+  }
+
+  export type MealMenu = {
+    entry: MealId | null
+    mainCourse: MealId | null
+    dessert: MealId | null
+    drink: MealId | null
+  }
+
   export type Guest = GuestValues & {
     id: string
+    meal: MealMenu
   }
 
   export type Table = {
