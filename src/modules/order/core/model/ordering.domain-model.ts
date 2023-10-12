@@ -21,4 +21,10 @@ export namespace OrderingDomainModel {
   export type Guest = GuestValues & {
     id: string
   }
+
+  export type Table = {
+    id: string
+    title: string
+    capacity: number
+  }
 }
