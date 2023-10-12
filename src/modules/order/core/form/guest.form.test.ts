@@ -1,4 +1,5 @@
 import { GuestForm } from '@ratatouille/modules/order/core/form/guest.form'
+import { GuestFactory } from '@ratatouille/modules/order/core/model/guest.factory'
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 class StubIdProvider {
@@ -10,32 +11,15 @@ class StubIdProvider {
 const idProvider = new StubIdProvider()
 const form = new GuestForm(idProvider)
 const emptyInitialState: OrderingDomainModel.Form = { guests: [], organizerId: null }
+const johnDoe = GuestFactory.create({ id: '1', firstName: 'John', lastName: 'Doe' })
+const janeDoe = GuestFactory.create({ id: '2', firstName: 'Jane', lastName: 'Doe' })
+
 const stateWithOneUser: OrderingDomainModel.Form = {
-  guests: [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 0,
-    },
-  ],
+  guests: [johnDoe],
   organizerId: null,
 }
 const stateWithTwoUsers: OrderingDomainModel.Form = {
-  guests: [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 0,
-    },
-    {
-      id: '2',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 0,
-    },
-  ],
+  guests: [johnDoe, janeDoe],
   organizerId: null,
 }
 
@@ -60,13 +44,13 @@ describe('add a guest', () => {
           id: '1',
           firstName: 'John',
           lastName: 'Doe',
-          age: 0,
+          age: 18,
         },
         {
           id: '1',
           firstName: 'John',
           lastName: 'Doe',
-          age: 0,
+          age: 18,
         },
       ],
       organizerId: null,
@@ -85,7 +69,7 @@ describe('add a guest', () => {
           id: '1',
           firstName: 'John',
           lastName: 'Doe',
-          age: 0,
+          age: 18,
         },
       ],
     })
@@ -117,9 +101,9 @@ describe('remove a guest', () => {
       guests: [
         {
           id: '2',
-          firstName: 'John',
+          firstName: 'Jane',
           lastName: 'Doe',
-          age: 0,
+          age: 18,
         },
       ],
       organizerId: null,
@@ -136,9 +120,9 @@ describe('set an organizer', () => {
     const state = form.changeOrganizer(stateWithOneUser, '1')
     expect(state.organizerId).toEqual('1')
   })
-  it('should remove organizer when the user does not exist', () => {
-    const stateWithOneUserOrganizer = { ...stateWithOneUser, organizerId: '1' }
-    const state = form.removeGuest(stateWithOneUserOrganizer, '1')
+  it('should remove the organizer when the user with organizer status is removed', () => {
+    const stateWithTwoUsersAndOrganizer = { ...stateWithTwoUsers, organizerId: '1' }
+    const state = form.removeGuest(stateWithTwoUsersAndOrganizer, '1')
     expect(state.organizerId).toEqual(null)
   })
 })
@@ -157,6 +141,21 @@ describe('form submittable', () => {
     const isSubmittable = form.isSubmittable(stateWithOneUserOrganizer)
     expect(isSubmittable).toEqual(true)
   })
+
+  it.each<{ key: keyof OrderingDomainModel.GuestValues; value: any; msg: string }>([
+    {
+      key: 'firstName',
+      value: '',
+      msg: 'empty',
+    },
+    { key: 'lastName', value: '', msg: 'empty' },
+    { key: 'age', value: 0, msg: 'below or equal to 0' },
+  ])(`should not allow the $key of guests to be $msg`, ({ key, value }) => {
+    const stateWithTwoUsersAndOrganizer = { ...stateWithTwoUsers, organizerId: '1' }
+    const state = form.updateGuest(stateWithTwoUsersAndOrganizer, '2', key, value)
+    const isSubmittable = form.isSubmittable(state)
+    expect(isSubmittable).toEqual(false)
+  })
 })
 
 describe('update a guest', () => {
@@ -167,5 +166,9 @@ describe('update a guest', () => {
   ])(`should change the %s of a guest`, ({ key, value }) => {
     const state = form.updateGuest(stateWithOneUser, '1', key, value)
     expect(state.guests[0][key]).toEqual(value)
+  })
+  it('should do nothing when the guest does not exist', () => {
+    const state = form.updateGuest(stateWithOneUser, '2', 'firstName', 'Jane')
+    expect(state).toEqual(stateWithOneUser)
   })
 })

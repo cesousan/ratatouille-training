@@ -1,9 +1,13 @@
 import { useDispatch } from 'react-redux'
 
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
 import { Dependencies } from '@ratatouille/modules/store/dependencies'
+import { orderingReducer } from '@ratatouille/modules/order/core/store/ordering.slice'
+import { registerOrderingStepListeners } from '@ratatouille/modules/order/core/store/ordering-step.listener'
 
-const reducers = combineReducers({})
+const reducers = combineReducers({
+  ordering: orderingReducer,
+})
 
 export type AppStore = ReturnType<typeof createStore>
 export type AppState = ReturnType<typeof reducers>
@@ -16,11 +20,14 @@ export const createStore = (config: { initialState?: AppState; dependencies: Dep
     reducer: reducers,
     devTools: true,
     middleware: getDefaultMiddleware => {
+      const listener = createListenerMiddleware()
+      registerOrderingStepListeners(listener)
+
       return getDefaultMiddleware({
         thunk: {
           extraArgument: config.dependencies,
         },
-      })
+      }).prepend(listener.middleware)
     },
   })
 

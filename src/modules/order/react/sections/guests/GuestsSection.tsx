@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import { useGuestsSection } from '@ratatouille/modules/order/react/sections/use-guests-section'
+import { useGuestsSection } from '@ratatouille/modules/order/react/sections/guests/use-guests-section'
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 export const GuestsSection: React.FC<{}> = () => {
@@ -85,7 +85,7 @@ const GuestRow: React.FC<{
         <Grid item>
           <FormControl>
             <FormLabel>Age</FormLabel>
-            <TextField value={age} onChange={e => onChange(id, 'age', parseInt(e.target.value))} />
+            <TextField value={age} onChange={e => onChange(id, 'age', e.target.value ? parseInt(e.target.value) : 0)} />
           </FormControl>
         </Grid>
         <Grid item>
