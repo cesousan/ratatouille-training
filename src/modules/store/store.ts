@@ -1,9 +1,9 @@
+import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
-import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
-import { Dependencies } from '@ratatouille/modules/store/dependencies'
+import registerOrderListeners from '@ratatouille/modules/order/core/store/listeners'
 import { orderingReducer } from '@ratatouille/modules/order/core/store/ordering.slice'
-import { registerOrderingStepListeners } from '@ratatouille/modules/order/core/store/ordering-step.listener'
+import { Dependencies } from '@ratatouille/modules/store/dependencies'
 
 const reducers = combineReducers({
   ordering: orderingReducer,
@@ -21,8 +21,7 @@ export const createStore = (config: { initialState?: AppState; dependencies: Dep
     devTools: true,
     middleware: getDefaultMiddleware => {
       const listener = createListenerMiddleware()
-      registerOrderingStepListeners(listener)
-
+      registerOrderListeners(listener)
       return getDefaultMiddleware({
         thunk: {
           extraArgument: config.dependencies,
