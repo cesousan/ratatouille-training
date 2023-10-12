@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import { useGuestsSection } from '@ratatouille/modules/order/react/sections/guests/use-guests-section'
+import { useGuestsSection } from '@ratatouille/modules/order/react/sections/guests/use-guests.hook'
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 export const GuestsSection: React.FC<{}> = () => {
