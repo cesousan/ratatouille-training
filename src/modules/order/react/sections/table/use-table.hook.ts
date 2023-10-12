@@ -3,6 +3,7 @@ import { TableFactory } from '@ratatouille/modules/order/core/model/table.factor
 import { orderingSlice } from '@ratatouille/modules/order/core/store/ordering.slice'
 import { chooseTable } from '@ratatouille/modules/order/core/usecases/choose-table.usecase'
 import { AppState, useAppDispatch } from '@ratatouille/modules/store/store'
+import { invariant } from '@ratatouille/shared/invariant'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -11,6 +12,7 @@ export const useTable = () => {
     setAssignedTableId(tableId)
   }
   function onNext() {
+    invariant(assignedTableId !== null, 'Table must be assigned')
     dispatch(chooseTable(assignedTableId!))
   }
   function onPrevious() {
