@@ -12,6 +12,12 @@ export class GuestForm {
         firstName: 'John',
         lastName: 'Doe',
         age: 18,
+        meal: {
+          dessert: null,
+          drink: null,
+          entry: null,
+          mainCourse: null,
+        },
       })
     })
   }

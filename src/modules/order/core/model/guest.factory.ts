@@ -1,3 +1,4 @@
+import { MealMenuFactory } from '@ratatouille/modules/order/core/model/meal.factory'
 import { OrderingDomainModel } from '@ratatouille/modules/order/core/model/ordering.domain-model'
 
 export class GuestFactory {
@@ -7,6 +8,12 @@ export class GuestFactory {
       firstName: '',
       lastName: '',
       age: 18,
+      meal: {
+        dessert: null,
+        drink: null,
+        entry: null,
+        mainCourse: null,
+      },
       ...data,
     }
   }
